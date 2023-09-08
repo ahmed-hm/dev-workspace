@@ -3,7 +3,7 @@ services:
   workcontainer:
     container_name: workcontainer
     build:
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     volumes:
       - workcontainer:/work
     command: sleep infinity
