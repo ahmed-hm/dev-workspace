@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  workcontainer:
+    container_name: workcontainer
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - workcontainer:/work
+    command: sleep infinity
+  pg:
+    image: postgres:15.4
+    container_name: postgresdb
+    restart: always
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    volumes:
+      - pg:/var/lib/postgresql/data
+  pg-admin:
+    image: dpage/pgadmin4:latest
+    container_name: postgresadmin
+    restart: always
+    ports:
+      - "${PGADMIN_PORT}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - ${REDIS_PORT}:6379
+volumes:
+  workcontainer:
+  pg:
+  pgadmin-data:
+  redis:
+  redis-config:

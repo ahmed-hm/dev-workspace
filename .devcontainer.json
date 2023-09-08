@@ -1,0 +1,14 @@
+{
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "workcontainer",
+    "workspaceFolder": "/work",
+    "extensions": [
+        "dbaeumer.vscode-eslint",
+        "github.copilot",
+        "eamodio.gitlens",
+        "gruntfuggly.todo-tree",
+        "esbenp.prettier-vscode",
+        "mhutchie.git-graph",
+        "ms-vsliveshare.vsliveshare"
+    ]
+}
