@@ -2,13 +2,21 @@
     "dockerComposeFile": "docker-compose.yml",
     "service": "workcontainer",
     "workspaceFolder": "/work",
-    "extensions": [
-        "dbaeumer.vscode-eslint",
-        "github.copilot",
-        "eamodio.gitlens",
-        "gruntfuggly.todo-tree",
-        "esbenp.prettier-vscode",
-        "mhutchie.git-graph",
-        "ms-vsliveshare.vsliveshare"
-    ]
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "eamodio.gitlens",
+                "eliostruyf.vscode-typescript-exportallmodules",
+                "esbenp.prettier-vscode",
+                "GitHub.copilot",
+                "Gruntfuggly.todo-tree",
+                "JannisX11.batch-rename-extension",
+                "mhutchie.git-graph",
+                "ms-vscode.live-server",
+                "ms-vsliveshare.vsliveshare",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    }
 }
