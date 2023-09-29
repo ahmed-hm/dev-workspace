@@ -18,5 +18,14 @@
                 "streetsidesoftware.code-spell-checker"
             ]
         }
+    },
+    "mounts": [
+        "source=workcontainer-zshhistory,target=/commandhistory,type=volume"
+    ],
+    "features": {
+        "docker-from-docker": {
+            "version": "latest",
+            "moby": true
+        }
     }
 }
