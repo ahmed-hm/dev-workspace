@@ -7,6 +7,7 @@ ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG KUBECTL_VERSION
 ARG HELM_VERSION
+ARG PG_CLIENT_VERSION
 
 USER ${USERNAME}
 
@@ -28,9 +29,15 @@ RUN aws configure set default.region ${AWS_REGION}
 
 RUN aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_NAME}
 
+RUN sudo apt update
+RUN sudo apt -y install postgresql-client-${PG_CLIENT_VERSION}
+
 RUN bash -i -c "nvm install 18.17.1"
 RUN bash -i -c "nvm alias default 18.17.1"
 RUN bash -i -c "nvm use default"
+
+RUN npm i -g @nestjs/cli@10.1.18
+RUN npm i -g yalc
 
 RUN git clone "https://github.com/zsh-users/zsh-autosuggestions" "${ZSH_CUSTOM:-/home/${USERNAME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 RUN sed -i "/^plugins=/c\plugins=(git zsh-autosuggestions sudo web-search copyfile copybuffer copypath dirhistory history jsontools)" /home/${USERNAME}/.zshrc
