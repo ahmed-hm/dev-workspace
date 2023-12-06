@@ -6,63 +6,79 @@ services:
       dockerfile: dockerfile
       args:
         - USERNAME=${USERNAME}
-        - AWS_REGION=${AWS_DEFAULT_REGION}
-        - EKS_NAME=${EKS_NAME}
-        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
         - KUBECTL_VERSION=${KUBECTL_VERSION}
         - HELM_VERSION=${HELM_VERSION}
-        - PG_CLIENT_VERSION=${PG_CLIENT_VERSION}
     environment:
       - NPM_TOKEN=${NPM_TOKEN}
     volumes:
-      - workcontainer:/work
+      - workcontainer:/home/node/workspace
     command: sleep infinity
-  pg:
-    image: postgres:15.4
-    container_name: postgresdb
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - pg:/var/lib/postgresql/data
-  pg-admin:
-    image: dpage/pgadmin4:latest
-    container_name: postgresadmin
-    ports:
-      - "${PGADMIN_PORT}:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - pgadmin:/var/lib/pgadmin
   redis:
     image: redis:7.2-alpine
     container_name: redis
     volumes:
-      - redis:/var/lib/redis
+      - redis:/data
       - redis-config:/usr/local/etc/redis/redis.conf
     ports:
       - ${REDIS_PORT}:6379
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: elasticsearch
+    ports:
+      - ${ELASTICSEARCH_PORT}:9200
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+  rabbitmq:
+    image: rabbitmq:3.12
+    container_name: rabbitmq
+    ports:
+      - ${RABBITMQ_PORT}:5672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+  neo4j:
+    image: neo4j:4.4
+    container_name: neo4j
+    ports:
+      - ${NEO4J_PORT_1}:7687
+      - ${NEO4J_PORT_2}:7474
+    environment:
+      - NEO4J_AUTH=${NEO4J_AUTH}
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-conf:/conf
+      - neo4j-plugins:/plugins
+      - neo4j-licenses:/licenses
+      - neo4j-import:/import
+      - neo4j-ssl:/ssl
+      - neo4j-metrics:/metrics
   chartmuseum:
     image: bitnami/chartmuseum:latest
     container_name: chartmuseum
     ports:
       - ${REGISTERY_PORT}:8080
     environment:
-      DEBUG: "1"
-      STORAGE: "local"
-      STORAGE_LOCAL_ROOTDIR: "/bitnami/data"
+      DEBUG: '1'
+      STORAGE: 'local'
+      STORAGE_LOCAL_ROOTDIR: '/bitnami/data'
     volumes:
       - chartmuseum:/bitnami/data
 
 volumes:
   workcontainer:
-  pg:
-  pgadmin:
+  elasticsearch-data:
+  rabbitmq-data:
+  neo4j-data:
   redis:
+  neo4j-logs:
+  neo4j-conf:
+  neo4j-plugins:
+  neo4j-licenses:
+  neo4j-import:
+  neo4j-ssl:
+  neo4j-metrics:
   redis-config:
   chartmuseum:
