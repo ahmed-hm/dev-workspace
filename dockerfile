@@ -32,6 +32,8 @@ RUN aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_NAME}
 RUN sudo apt update
 RUN sudo apt -y install postgresql-client-${PG_CLIENT_VERSION}
 
+RUN sudo apt -y install protobuf-compiler 
+
 RUN bash -i -c "nvm install 18.17.1"
 RUN bash -i -c "nvm alias default 18.17.1"
 RUN bash -i -c "nvm use default"
