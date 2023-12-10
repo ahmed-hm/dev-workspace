@@ -13,6 +13,7 @@ services:
     volumes:
       - workcontainer:/home/node/workspace
     command: sleep infinity
+    network_mode: "host"
   redis:
     image: redis:7.2-alpine
     container_name: redis
@@ -21,6 +22,7 @@ services:
       - redis-config:/usr/local/etc/redis/redis.conf
     ports:
       - ${REDIS_PORT}:6379
+    network_mode: "host"
   elasticsearch:
     image: elasticsearch:8.11.0
     container_name: elasticsearch
@@ -31,6 +33,7 @@ services:
       - xpack.security.enabled=false
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+    network_mode: "host"
   rabbitmq:
     image: rabbitmq:3.12
     container_name: rabbitmq
@@ -38,6 +41,7 @@ services:
       - ${RABBITMQ_PORT}:5672
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
+    network_mode: "host"
   neo4j:
     image: neo4j:4.4
     container_name: neo4j
@@ -55,6 +59,7 @@ services:
       - neo4j-import:/import
       - neo4j-ssl:/ssl
       - neo4j-metrics:/metrics
+    network_mode: "host"
   chartmuseum:
     image: bitnami/chartmuseum:latest
     container_name: chartmuseum
@@ -66,6 +71,7 @@ services:
       STORAGE_LOCAL_ROOTDIR: '/bitnami/data'
     volumes:
       - chartmuseum:/bitnami/data
+    network_mode: "host"
 
 volumes:
   workcontainer:
