@@ -15,7 +15,7 @@ RUN curl -L "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/hom
 RUN unzip "/home/${USERNAME}/awscliv2.zip" -d "./home/${USERNAME}"
 RUN sudo /home/${USERNAME}/aws/install
 
-RUN curl -L "https://dl.k8s.io/release/v1.28.2/bin/linux/arm64/kubectl" -o "/home/${USERNAME}/kubectl"
+RUN curl -L "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/arm64/kubectl" -o "/home/${USERNAME}/kubectl"
 RUN sudo install -o root -g root -m 0755 "/home/${USERNAME}/kubectl" "/usr/local/bin/kubectl"
 
 RUN curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-arm64.tar.gz" -o "/home/${USERNAME}/helm-v${HELM_VERSION}-linux-arm64.tar.gz"
