@@ -5,7 +5,7 @@ services:
     build:
       dockerfile: dockerfile
       args:
-        - USERNAME=${USERNAME}
+        - USER_NAME=${USER_NAME}
         - KUBECTL_VERSION=${KUBECTL_VERSION}
         - HELM_VERSION=${HELM_VERSION}
     environment:
