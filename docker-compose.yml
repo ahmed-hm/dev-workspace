@@ -8,6 +8,10 @@ services:
         - USER_NAME=${USER_NAME}
         - KUBECTL_VERSION=${KUBECTL_VERSION}
         - HELM_VERSION=${HELM_VERSION}
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - AWS_REGION=${AWS_REGION}
+        - EKS_NAME=${EKS_NAME}
     environment:
       - NPM_TOKEN=${NPM_TOKEN}
     volumes:

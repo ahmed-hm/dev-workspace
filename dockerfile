@@ -2,21 +2,31 @@ FROM mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm
 
 ARG USER_NAME
 ARG KUBECTL_VERSION
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_REGION
+ARG EKS_NAME
 # ARG HELM_VERSION
 
 USER ${USER_NAME}
 
-RUN curl -L "https://dl.k8s.io/release/v{KUBECTL_VERSION}/bin/linux/amd64/kubectl" -o "/home/${USER_NAME}/kubectl"
+RUN curl -L "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/home/${USER_NAME}/awscliv2.zip"
+RUN unzip "/home/${USER_NAME}/awscliv2.zip" -d "./home/${USER_NAME}"
+RUN sudo /home/${USER_NAME}/aws/install
+
+RUN curl -L "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/arm64/kubectl" -o "/home/${USER_NAME}/kubectl"
 RUN sudo install -o root -g root -m 0755 "/home/${USER_NAME}/kubectl" "/usr/local/bin/kubectl"
 
-# RUN curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" -o "/home/${USER_NAME}/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
-# RUN tar -zxvf "/home/${USER_NAME}/helm-v${HELM_VERSION}-linux-amd64.tar.gz" -C "/home/${USER_NAME}"
+# RUN curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-arm64.tar.gz" -o "/home/${USER_NAME}/helm-v${HELM_VERSION}-linux-arm64.tar.gz"
+# RUN tar -zxvf "/home/${USER_NAME}/helm-v${HELM_VERSION}-linux-arm64.tar.gz" -C "/home/${USER_NAME}"
 # RUN ls -la "/home/${USER_NAME}"
-# RUN sudo mv "/home/${USER_NAME}/linux-amd64/helm" "/usr/local/bin/helm"
+# RUN sudo mv "/home/${USER_NAME}/linux-arm64/helm" "/usr/local/bin/helm"
 
-RUN sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN sudo unzip awscliv2.zip
-RUN sudo ./aws/install
+RUN aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+RUN aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+RUN aws configure set default.region ${AWS_REGION}
+
+RUN aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_NAME}
 
 RUN bash -i -c "nvm install 18.17.1"
 RUN bash -i -c "nvm alias default 18.17.1"
