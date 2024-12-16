@@ -6,7 +6,7 @@ ARG HELM_VERSION
 
 USER ${USER_NAME}
 
-RUN curl -L "https://dl.k8s.io/release/v{KUBECTL_VERSION}/bin/linux/amd64/kubectl" -o "/home/${USER_NAME}/kubectl"
+RUN curl -L "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" -o "/home/${USER_NAME}/kubectl"
 RUN sudo install -o root -g root -m 0755 "/home/${USER_NAME}/kubectl" "/usr/local/bin/kubectl"
 
 RUN curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" -o "/home/${USER_NAME}/helm-v${HELM_VERSION}-linux-amd64.tar.gz"
